@@ -18,6 +18,10 @@ class Game(object):
         self.hasPlant = []
         self.gold = 100
         self.goldFont = pygame.font.Font(None, 60)
+
+        self.zombie = 0
+        self.zombieFont = pygame.font.Font(None, 60)
+
         self.zombieGenertateTime = 0
         for i in range(GRID_SIZE[0]):
             col = []
@@ -32,6 +36,11 @@ class Game(object):
         textImage = self.goldFont.render("Gold: " + str(self.gold), True, (255, 255, 255))
         self.ds.blit(textImage, (10, 20))
 
+        textImage = self.zombieFont.render("Score: " + str(self.zombie), True, (0, 0, 0))
+        self.ds.blit(textImage, (13, 83))
+
+        textImage = self.zombieFont.render("Score: " + str(self.zombie), True, (255, 255, 255))
+        self.ds.blit(textImage, (10, 80))
 
     def draw(self):
         self.back.draw(self.ds)
@@ -73,7 +82,7 @@ class Game(object):
                     self.fight(summon, zombie)
                     if zombie.hp <= 0:
                         self.zombies.remove(zombie)
-                        self.zombie += 1
+                        self.zombie += 1 
                     if summon.hp <= 0:
                         self.summons.remove(summon)
                     return 
