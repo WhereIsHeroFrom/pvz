@@ -64,10 +64,10 @@ class Game(object):
         for zombie in self.zombies:
             zombie.update()
         
-        for summon in self.summons:
-            if summon.getRect().x > GAME_SIZE[0] or summon.getRect().y > GAME_SIZE[1]:
-                self.summons.remove(summon)
-                break
+        for summon in self.summons: 
+            if summon.getRect().x > GAME_SIZE[0] or summon.getRect().y > GAME_SIZE[1]: 
+                self.summons.remove(summon) 
+                break 
         
         if time.time() - self.zombieGenertateTime > ZOMBIE_BORN_CD:
             self.zombieGenertateTime = time.time()
