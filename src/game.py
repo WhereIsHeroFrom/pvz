@@ -74,6 +74,7 @@ class Game(object):
             self.addZombie(ZOMBIE_BORN_X, random.randint(0, GRID_COUNT[1]-1))
         
         self.checkSummonVSZombie()
+        self.checkZombieVSPlant()
     
     def checkSummonVSZombie(self):
         for summon in self.summons:
@@ -86,7 +87,15 @@ class Game(object):
                     if summon.hp <= 0:
                         self.summons.remove(summon)
                     return 
-
+        
+    def checkZombieVSPlant(self):
+        for zombie in self.zombies:
+            for plant in self.plants:
+                if zombie.isCollide(plant):
+                    self.fight(zombie, plant)
+                    if plant.hp <= 0:
+                        self.plants.remove(plant)
+                        return
         
     def getIndexByPos(self, pos):
         x = (pos[0] - LEFT_TOP[0]) // GRID_SIZE[0]
