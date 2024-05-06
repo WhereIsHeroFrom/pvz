@@ -12,6 +12,7 @@ class Game(object):
     def __init__(self, ds):
         self.ds = ds
         self.back = image.Image(PATH_BACK, 0, (0, 0), GAME_SIZE, 0)
+        self.lose = image.Image(PATH_LOSE, 0, (0, 0), GAME_SIZE, 0)
         self.plants = []
         self.zombies = []
         self.summons = []
@@ -23,6 +24,9 @@ class Game(object):
         self.zombieFont = pygame.font.Font(None, 60)
 
         self.zombieGenertateTime = 0
+
+        self.isGameOver = False
+
         for i in range(GRID_SIZE[0]):
             col = []
             for j in range(GRID_SIZE[1]):
@@ -51,6 +55,9 @@ class Game(object):
         for zombie in self.zombies:
             zombie.draw(self.ds)
         self.renderFont()
+        if self.isGameOver:
+            self.lose.draw(self.ds)
+
     
     def update(self):
         self.back.update()
@@ -63,6 +70,8 @@ class Game(object):
             summon.update()
         for zombie in self.zombies:
             zombie.update()
+            if zombie.getRect().x < 0:
+                self.isGameOver = True
         
         for summon in self.summons: 
             if summon.getRect().x > GAME_SIZE[0] or summon.getRect().y > GAME_SIZE[1]: 
@@ -72,6 +81,7 @@ class Game(object):
         if time.time() - self.zombieGenertateTime > ZOMBIE_BORN_CD:
             self.zombieGenertateTime = time.time()
             self.addZombie(ZOMBIE_BORN_X, random.randint(0, GRID_COUNT[1]-1))
+    
         
         self.checkSummonVSZombie()
         self.checkZombieVSPlant()
@@ -159,6 +169,8 @@ class Game(object):
 
 
     def mouseClickHandler(self, btn):
+        if self.isGameOver:
+            return
         mousePos = pygame.mouse.get_pos()
         if self.checkLoot(mousePos):
             return
