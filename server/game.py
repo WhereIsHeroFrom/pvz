@@ -11,11 +11,12 @@ class Game(object):
     def __init__(self):
         self.hasPlant = [ [0]*GRID_COUNT[1] for _ in range(GRID_COUNT[0]) ]
 
-    def checkAddPlant(self, pos):
+    def checkAddPlant(self, pos, plant_idx):
         msg = {
-            'type' : S2C_ADD_FLOWER,
+            'type' : S2C_ADD_PLANT,
             'code' : S2C_CODE_FAILED,
-            'pos' : pos
+            'pos' : pos,
+            'plant_idx': plant_idx,
         }
 
         x, y = pos
@@ -23,10 +24,10 @@ class Game(object):
             return msg
         if y < 0 or y >= GRID_COUNT[1]:
             return msg
-        if self.hasPlant[x][y] == 1:
+        if self.hasPlant[x][y] != 0:
             return msg
         # 金钱判定
 
-        self.hasPlant[x][y] = 1
+        self.hasPlant[x][y] = plant_idx
         msg['code'] = S2C_CODE_SUCCEED
         return msg

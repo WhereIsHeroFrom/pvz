@@ -160,7 +160,11 @@ class Game(object):
         mousePos = pygame.mouse.get_pos()
         if self.checkLoot(mousePos):
             return
+        plantIdx = -1
         if btn == 1:
-            asyncio.run(self.client.c2s( {'type' : C2S_ADD_FLOWER , 'pos' : self.getIndexByPos(mousePos)} ))
+            plantIdx = SUNFLOWER_ID
         elif btn == 3:
-            self.addPlant(self.getIndexByPos(mousePos), PEASHOOTER_ID)
+            plantIdx = PEASHOOTER_ID
+        
+        if plantIdx != -1:
+            asyncio.run(self.client.c2s( {'type' : C2S_ADD_PLANT , 'pos' : self.getIndexByPos(mousePos), 'plant_idx' : plantIdx } ))

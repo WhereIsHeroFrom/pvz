@@ -4,8 +4,12 @@ import json
 import sys
 import os
 
+import platform
+get_os = platform.system()
+split_symbol = '\\' if get_os == 'Windows' else '/'
+
 current_path = os.path.abspath(__file__)
-top_path = "/".join(current_path.split('/')[:-2])
+top_path = split_symbol.join(current_path.split('\\')[:-2])
 sys.path.append(top_path)
 from share.const import *
 from game import *
@@ -18,8 +22,8 @@ async def handle_client(reader, writer):
     print(msg)
 
     s2cmsg = None
-    if msg['type'] == C2S_ADD_FLOWER:
-        s2cmsg = g.checkAddPlant(msg['pos'])
+    if msg['type'] == C2S_ADD_PLANT:
+        s2cmsg = g.checkAddPlant(msg['pos'], msg['plant_idx'])
 
     writer.write(json.dumps(s2cmsg).encode())
     await writer.drain()
