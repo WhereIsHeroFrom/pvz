@@ -36,7 +36,7 @@ class Game(object):
                 col.append(0)
             self.hasPlant.append(col)
         
-        self.client = asyncclient.AsyncClient(SERVER_IP, SERVER_PORT)
+        self.client = asyncclient.AsyncClient(self, SERVER_IP, SERVER_PORT)
 
     
     def renderFont(self):
@@ -154,8 +154,8 @@ class Game(object):
                 return True
         return False
 
-    def checkAddPlant(self, mousePos, objId):
-        x, y = self.getIndexByPos(mousePos)
+    def checkAddPlant(self, pos, objId):
+        x, y = pos
         if x < 0 or x >= GRID_COUNT[0]:
             return 
         if y < 0 or y >= GRID_COUNT[1]:
@@ -182,6 +182,6 @@ class Game(object):
             return
         if btn == 1:
             asyncio.run(self.client.c2s( {'type' : C2S_ADD_FLOWER , 'pos' : self.getIndexByPos(mousePos)} ))
-            self.checkAddPlant(mousePos, SUNFLOWER_ID)
+            # self.checkAddPlant(mousePos, SUNFLOWER_ID)
         elif btn == 3:
-            self.checkAddPlant(mousePos, PEASHOOTER_ID)
+            self.checkAddPlant(self.getIndexByPos(mousePos), PEASHOOTER_ID)
