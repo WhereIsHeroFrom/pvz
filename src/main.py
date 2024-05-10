@@ -9,6 +9,7 @@ pygame.init()
 DS = pygame.display.set_mode( GAME_SIZE )
 game = Game(DS)
 
+
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
