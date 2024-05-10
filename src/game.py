@@ -9,7 +9,7 @@ import data_object
 import asyncclient
 import asyncio
 from const import *
-from ..share.const import * 
+from share.const import * 
 
 class Game(object):
     def __init__(self, ds):

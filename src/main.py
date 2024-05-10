@@ -1,5 +1,10 @@
 import pygame
 import sys
+import os
+current_path = os.path.abspath(__file__)
+top_path = "\\".join(current_path.split('\\')[:-2])
+sys.path.append(top_path)
+
 from pygame.locals import *
 from const import *
 from game import *
