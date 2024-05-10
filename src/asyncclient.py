@@ -19,4 +19,5 @@ class AsyncClient(object):
         msg = json.loads(message.decode())
         print(msg)
         if msg['type'] == S2C_ADD_FLOWER:
-            self.game.checkAddPlant(msg['pos'], SUNFLOWER_ID)
+            if msg['code'] == S2C_CODE_SUCCEED:
+                self.game.addPlant(msg['pos'], SUNFLOWER_ID)

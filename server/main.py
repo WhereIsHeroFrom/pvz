@@ -3,22 +3,23 @@ import const
 import json
 import sys
 import os
+
 current_path = os.path.abspath(__file__)
 top_path = "\\".join(current_path.split('\\')[:-2])
 sys.path.append(top_path)
 from share.const import *
+from game import *
+
+g = Game()
 
 async def handle_client(reader, writer):
     data = await reader.read(const.MAX_BYTES)
     msg = json.loads(data.decode())
     print(msg)
 
-    s2cmsg = {}
+    s2cmsg = None
     if msg['type'] == C2S_ADD_FLOWER:
-        s2cmsg = {
-            'type' : S2C_ADD_FLOWER,
-            'pos' : msg['pos']
-        }
+        s2cmsg = g.checkAddPlant(msg['pos'])
 
     writer.write(json.dumps(s2cmsg).encode())
     await writer.drain()

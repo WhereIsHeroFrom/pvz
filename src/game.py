@@ -19,7 +19,6 @@ class Game(object):
         self.plants = []
         self.zombies = []
         self.summons = []
-        self.hasPlant = []
         self.gold = 100
         self.goldFont = pygame.font.Font(None, 60)
 
@@ -29,13 +28,6 @@ class Game(object):
         self.zombieGenertateTime = 0
 
         self.isGameOver = False
-
-        for i in range(GRID_SIZE[0]):
-            col = []
-            for j in range(GRID_SIZE[1]):
-                col.append(0)
-            self.hasPlant.append(col)
-        
         self.client = asyncclient.AsyncClient(self, SERVER_IP, SERVER_PORT)
 
     
@@ -154,20 +146,8 @@ class Game(object):
                 return True
         return False
 
-    def checkAddPlant(self, pos, objId):
+    def addPlant(self, pos, objId):
         x, y = pos
-        if x < 0 or x >= GRID_COUNT[0]:
-            return 
-        if y < 0 or y >= GRID_COUNT[1]:
-            return 
-        if self.gold < data_object.data[objId]['PRICE']:
-            return
-        if self.hasPlant[x][y] == 1:
-            return 
-        
-        self.hasPlant[x][y] = 1
-        self.gold -= data_object.data[objId]['PRICE']
-
         if objId == SUNFLOWER_ID:
             self.addSunFlower(x, y)
         elif objId == PEASHOOTER_ID:
@@ -182,6 +162,5 @@ class Game(object):
             return
         if btn == 1:
             asyncio.run(self.client.c2s( {'type' : C2S_ADD_FLOWER , 'pos' : self.getIndexByPos(mousePos)} ))
-            # self.checkAddPlant(mousePos, SUNFLOWER_ID)
         elif btn == 3:
-            self.checkAddPlant(self.getIndexByPos(mousePos), PEASHOOTER_ID)
+            self.addPlant(self.getIndexByPos(mousePos), PEASHOOTER_ID)
