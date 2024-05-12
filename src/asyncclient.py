@@ -21,3 +21,6 @@ class AsyncClient(object):
         if msg['type'] == S2C_ADD_PLANT:
             if msg['code'] == S2C_CODE_SUCCEED:
                 self.game.addPlant(msg['pos'], msg['plant_idx'])
+        elif msg['type'] == S2C_GET_PLANTS:
+            if msg['code'] == S2C_CODE_SUCCEED:
+                self.game.initPlantInfo(msg['plant_info'])

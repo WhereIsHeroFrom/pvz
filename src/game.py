@@ -29,7 +29,12 @@ class Game(object):
 
         self.isGameOver = False
         self.client = asyncclient.AsyncClient(self, SERVER_IP, SERVER_PORT)
+        asyncio.run(self.client.c2s( {'type' : C2S_GET_PLANTS } ))
 
+    def initPlantInfo(self, plantInfo):
+        for x, col in enumerate( plantInfo ):
+            for y, row in enumerate( col ):
+                self.addPlant( (x,y), row )
     
     def renderFont(self):
         textImage = self.goldFont.render("Gold: " + str(self.gold), True, (0, 0, 0))

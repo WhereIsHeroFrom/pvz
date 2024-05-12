@@ -24,6 +24,8 @@ async def handle_client(reader, writer):
     s2cmsg = None
     if msg['type'] == C2S_ADD_PLANT:
         s2cmsg = g.checkAddPlant(msg['pos'], msg['plant_idx'])
+    elif msg['type'] == C2S_GET_PLANTS:
+        s2cmsg = g.getPlantInfo()
 
     writer.write(json.dumps(s2cmsg).encode())
     await writer.drain()

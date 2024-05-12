@@ -36,11 +36,11 @@ class Game(object):
         if len(results) == 0:
             self.savePlantInfo()
         else:
-            self.plantInfo = json.loads( results[0] )
+            self.plantInfo = json.loads( results[0][1] )
 
     def savePlantInfo(self):
         plantInfo = json.dumps(self.plantInfo)
-        self.executeSql( "INSERT INTO game (id, plantInfo) VALUES (0, '%s') ON DUPLICATE KEY UPDATE plantInfo = '%s';" % (plantInfo, plantInfo) )
+        self.executeSql( "INSERT INTO game (id, plantInfo) VALUES (1, '%s') ON DUPLICATE KEY UPDATE id = 1, plantInfo = '%s';" % (plantInfo, plantInfo) )
         
     def checkAddPlant(self, pos, plant_idx):
         msg = {
@@ -62,4 +62,12 @@ class Game(object):
         self.plantInfo[x][y] = plant_idx
         self.savePlantInfo()
         msg['code'] = S2C_CODE_SUCCEED
+        return msg
+
+    def getPlantInfo(self):
+        msg = {
+            'type' : S2C_GET_PLANTS,
+            'code' : S2C_CODE_SUCCEED,
+            'plant_info' : self.plantInfo 
+        }
         return msg
